@@ -12,6 +12,7 @@ import {
   EuiHealth,
   EuiDescriptionList,
   EuiScreenReaderOnly,
+  EuiTableField,
 } from '../../../../../src/components';
 
 type User = {
@@ -169,7 +170,7 @@ export default () => {
    */
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(5);
-  const [sortField, setSortField] = useState<keyof User>('firstName');
+  const [sortField, setSortField] = useState<EuiTableField<User>>('firstName');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
   const onTableChange = ({ page, sort }: Criteria<User>) => {
@@ -199,7 +200,7 @@ export default () => {
     users: User[],
     pageIndex: number,
     pageSize: number,
-    sortField: keyof User,
+    sortField: EuiTableField<User>,
     sortDirection: 'asc' | 'desc'
   ) => {
     let items;
