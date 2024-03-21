@@ -72,6 +72,7 @@ import {
   EuiTableSelectionType,
   EuiTableSortingType,
   ItemIdResolved,
+  EuiTableField,
 } from './table_types';
 import { EuiTableSortMobileProps } from '../table/mobile/table_sort_mobile';
 
@@ -186,7 +187,7 @@ export interface Criteria<T> {
    * If the shown items are sorted, this describes the sort criteria
    */
   sort?: {
-    field: keyof T;
+    field: EuiTableField<T>;
     direction: 'asc' | 'desc';
   };
 }
@@ -500,7 +501,7 @@ export class EuiBasicTable<T extends object = any> extends Component<
           },
       sort: {
         field: ((column as EuiTableFieldDataColumnType<T>).field ||
-          column.name) as keyof T,
+          column.name) as EuiTableField<T>,
         direction,
       },
     };

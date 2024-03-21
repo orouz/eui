@@ -11,7 +11,7 @@ import { HorizontalAlignment } from '../../services';
 import { Pagination } from './pagination_bar';
 import { Action } from './action_types';
 import { Primitive } from '../../services/sort/comparators';
-import { CommonProps } from '../common';
+import { CommonProps, DotPath } from '../common';
 import {
   EuiTableRowCellProps,
   EuiTableRowCellMobileOptionsShape,
@@ -37,9 +37,7 @@ export interface EuiTableFieldDataColumnType<T>
   /**
    * A field of the item (may be a nested field)
    */
-  // type hack used for better autocomplete support
-  // https://github.com/microsoft/TypeScript/issues/29729
-  field: keyof T | (string & {}); // supports outer.inner key paths
+  field: EuiTableField<T>;
   /**
    * The display name of the column
    */
@@ -151,12 +149,16 @@ export interface EuiTableActionsColumnType<T extends object> {
   width?: string;
 }
 
+export type EuiTableField<T> =
+  | DotPath<T> // union of all fields in T, including nested fields in dot notation
+  | (string & {}); // workaround for accepting any string
+
 export interface EuiTableSortingType<T> {
   /**
    * Indicates the property/field to sort on
    */
   sort?: {
-    field: keyof T;
+    field: EuiTableField<T>;
     direction: 'asc' | 'desc';
   };
   /**

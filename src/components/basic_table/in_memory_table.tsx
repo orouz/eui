@@ -18,6 +18,7 @@ import {
   EuiTableFieldDataColumnType,
   EuiTableDataType,
   EuiTableSortingType,
+  EuiTableField,
 } from './table_types';
 import { PropertySort } from '../../services';
 import { Pagination as PaginationBarType } from './pagination_bar';
@@ -440,7 +441,7 @@ export class EuiInMemoryTable<T extends object = object> extends Component<
     }
 
     let { field: sortName, direction: sortDirection } = (sort || {}) as {
-      field: keyof T;
+      field: EuiTableField<T>;
       direction: Direction;
     };
 
@@ -457,11 +458,11 @@ export class EuiInMemoryTable<T extends object = object> extends Component<
       );
       if (sortColumn) {
         // Ensure sortName uses `name`
-        sortName = sortColumn.name as keyof T;
+        sortName = sortColumn.name as EuiTableField<T>;
 
         // Ensure reportedSortName uses `field` if it exists
         const sortField = (sortColumn as EuiTableFieldDataColumnType<T>).field;
-        if (sortField) reportedSortName = sortField as keyof T;
+        if (sortField) reportedSortName = sortField;
       }
     }
 
@@ -472,8 +473,8 @@ export class EuiInMemoryTable<T extends object = object> extends Component<
       this.state.sortDirection === 'desc' &&
       sortDirection === 'asc'
     ) {
-      sortName = '' as keyof T;
-      reportedSortName = '' as keyof T;
+      sortName = '' as EuiTableField<T>;
+      reportedSortName = '' as EuiTableField<T>;
       sortDirection = 'asc'; // Default sort direction.
     }
 
@@ -729,7 +730,7 @@ export class EuiInMemoryTable<T extends object = object> extends Component<
             !sortName && !sortDirection
               ? undefined
               : {
-                  field: sortName as keyof T,
+                  field: sortName as EuiTableField<T>,
                   direction: sortDirection as Direction,
                 },
           allowNeutralSort: this.state.allowNeutralSort,

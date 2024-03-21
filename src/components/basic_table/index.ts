@@ -23,6 +23,7 @@ export type {
   EuiTableActionsColumnType,
   EuiTableSelectionType,
   EuiTableSortingType,
+  EuiTableField,
 } from './table_types';
 export type { Pagination } from './pagination_bar';
 export type { DefaultItemAction, CustomItemAction } from './action_types';

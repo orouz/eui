@@ -243,3 +243,25 @@ export type RecursivePartial<T> = {
     : RecursivePartial<T[P]>; // recurse for all non-array and non-primitive values
 };
 type NonAny = number | boolean | string | symbol | null;
+
+type StringableKey<T> = T extends readonly unknown[]
+  ? number extends T['length']
+    ? number
+    : `${number}`
+  : string | number;
+
+// https://github.com/microsoft/TypeScript/issues/20423#issuecomment-813992417
+// Converts a nested object type to a union of dot paths
+export type DotPath<T> = T extends
+  | Date
+  | RegExp
+  | Function
+  | Error
+  | Map<any, any>
+  | Set<any>
+  ? never
+  : T extends object
+  ? {
+      [P in keyof T & StringableKey<T>]: `${P}` | `${P}.${DotPath<T[P]>}`;
+    }[keyof T & StringableKey<T>]
+  : never;
